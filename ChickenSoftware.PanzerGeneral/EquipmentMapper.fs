@@ -31,6 +31,18 @@ let getMotorizedEquipment (ed: EquipmentContext.Equipment) =
     let moveableEquipment = {MaximumMovementPoints = ed.Movement}
     {MoveableEquipment = moveableEquipment; MaximumFuel = ed.MaxFuel}
 
+let getTrackedEquipment (ed: EquipmentContext.Equipment) (motorizedEquipment: MotorizedEquipment) = 
+    match ed.MovementTypeId with
+    | 1 -> TrackedEquipment.HalfTrack (HalfTrackEquipment motorizedEquipment)
+    | _ -> TrackedEquipment.FullTrack (FullTrackEquipment motorizedEquipment)
+
+let getLandMotorizedEquipment (ed: EquipmentContext.Equipment) = 
+    let motorizedEquipment = getMotorizedEquipment ed
+    match ed.MovementTypeId with
+    | 2 -> LandMotorizedEquipment.Wheeled (WheeledEquipment motorizedEquipment)
+    | _ -> let trackedEquipment = getTrackedEquipment ed motorizedEquipment
+           LandMotorizedEquipment.Tracked trackedEquipment
+
 let getCombatEquipment (ed: EquipmentContext.Equipment) =
     {MaximumAmmo = ed.MaxAmmo; Initative = ed.Initiative}
 
@@ -51,7 +63,7 @@ let getInfantryEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let entrenchableEquipment = getEntrenchableEquipment equipmentDatum
     let moveableEquipment = getMovableEquipment equipmentDatum
     let combatEquipment = getLandTargetCombatEquipment equipmentDatum
-    {InfantryEquipment.Equipment = equipment; 
+    {InfantryEquipment.BaseEquipment = equipment; 
     EntrenchableEquipment=entrenchableEquipment; 
     MoveableEquipment = moveableEquipment; 
     LandTargetCombatEquipment = combatEquipment}
@@ -59,33 +71,36 @@ let getInfantryEquipment (equipmentDatum: EquipmentContext.Equipment) =
 let getTankEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    let trackedEquipment = FullTrackEquipment motorizedEquipment
     let combatEquipment = getLandTargetCombatEquipment equipmentDatum
-    {TankEquipment.Equipment = equipment; 
-    MotorizedEquipment =  motorizedEquipment;
+    {TankEquipment.BaseEquipment = equipment; 
+    FullTrackedEquipment = trackedEquipment;
     LandTargetCombatEquipment = combatEquipment}
 
 let getReconEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
-    let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    let landMotorizedEquipment = getLandMotorizedEquipment equipmentDatum
     let combatEquipment = getLandTargetCombatEquipment equipmentDatum
-    {ReconEquipment.Equipment = equipment; 
-    MotorizedEquipment =  motorizedEquipment;
+    {ReconEquipment.BaseEquipment = equipment; 
+    LandMotorizedEquipment =  landMotorizedEquipment;
     LandTargetCombatEquipment = combatEquipment}
 
 let getTankDestroyerEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    let trackedEquipment = FullTrackEquipment motorizedEquipment
     let combatEquipment = getLandTargetCombatEquipment equipmentDatum
-    {TankDestroyerEquipment.Equipment = equipment; 
-    MotorizedEquipment =  motorizedEquipment;
+    {TankDestroyerEquipment.BaseEquipment = equipment; 
+    FullTrackedEquipment =  trackedEquipment;
     LandTargetCombatEquipment = combatEquipment}
 
 let getAntiAirEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
-    let entrenchableEquipment = getEntrenchableEquipment equipmentDatum
+    let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    let trackedEquipment = getTrackedEquipment equipmentDatum motorizedEquipment
     let combatEquipment = getAirTargetCombatEquipment equipmentDatum
-    {AntiAirEquipment.Equipment = equipment; 
-    EntrenchableEquipment =  entrenchableEquipment;
+    {AntiAirEquipment.BaseEquipment = equipment; 
+    TrackedEquipment =  trackedEquipment;
     AirTargetCombatEquipment = combatEquipment}
 
 let getEmplacementEquipment (equipmentDatum: EquipmentContext.Equipment) =
@@ -93,7 +108,7 @@ let getEmplacementEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let landCombatEquipment = getLandTargetCombatEquipment equipmentDatum
     let airCombatEquipment = getAirTargetCombatEquipment equipmentDatum
     let navalCombatEquipment = getNavalTargetCombatEquipment equipmentDatum
-    {EmplacementEquipment.Equipment = equipment;
+    {EmplacementEquipment.BaseEquipment = equipment;
     LandTargetCombatEquipment = landCombatEquipment;
     AirTargetCombatEquipment = airCombatEquipment;
     NavalTargetCombatEquipment = navalCombatEquipment}
@@ -103,7 +118,7 @@ let getAntiTankEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let entrenchableEquipment = getEntrenchableEquipment equipmentDatum
     let moveableEquipment = getMovableEquipment equipmentDatum
     let combatEquipment = getLandTargetCombatEquipment equipmentDatum
-    {AntiTankEquipment.Equipment = equipment;
+    {AntiTankEquipment.BaseEquipment = equipment;
     EntrenchableEquipment =  entrenchableEquipment;
     MoveableEquipment = moveableEquipment; 
     LandTargetCombatEquipment = combatEquipment}
@@ -112,21 +127,22 @@ let getArtilleryEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
     let moveableEquipment = getMovableEquipment equipmentDatum
     let combatEquipment = getLandTargetCombatEquipment equipmentDatum
-    {ArtilleryEquipment.Equipment = equipment;
+    {ArtilleryEquipment.BaseEquipment = equipment;
     MoveableEquipment = moveableEquipment; 
     LandTargetCombatEquipment = combatEquipment}
 
 let getSelfPropelledArtilleryEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getArtilleryEquipment equipmentDatum
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    let trackedEquipment = getTrackedEquipment equipmentDatum motorizedEquipment
     {SelfPropelledArtilleryEquipment.ArtilleryEquipment = equipment;
-    MotorizedEquipment = motorizedEquipment}
+    TrackedEquipment = trackedEquipment}
 
 let getAirDefenseEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
     let moveableEquipment = getMovableEquipment equipmentDatum
     let combatEquipment = getAirTargetCombatEquipment equipmentDatum
-    {AirDefenseEquipment.Equipment = equipment;
+    {AirDefenseEquipment.BaseEquipment = equipment;
     MoveableEquipment = moveableEquipment; 
     AirTargetCombatEquipment = combatEquipment}
 
@@ -139,8 +155,9 @@ let getTowedAirDefenseEquipment (equipmentDatum: EquipmentContext.Equipment) =
 let getSelfPropelledAirDefenseEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getAirDefenseEquipment equipmentDatum
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    let trackedEquipment = getTrackedEquipment equipmentDatum motorizedEquipment
     {SelfPropelledAirDefenseEquipment.AirDefenseEquipment = equipment;
-    MotorizedEquipment= motorizedEquipment}
+    TrackedEquipment= trackedEquipment}
 
 let getAirFighterEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
@@ -148,7 +165,7 @@ let getAirFighterEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let landCombatEquipment = getLandTargetCombatEquipment equipmentDatum
     let airCombatEquipment = getAirTargetCombatEquipment equipmentDatum
     let navalCombatEquipment = getNavalTargetCombatEquipment equipmentDatum
-    {AirFighterEquipment.Equipment = equipment;
+    {AirFighterEquipment.BaseEquipment = equipment;
     MotorizedEquipment =  motorizedEquipment;
     LandTargetCombatEquipment = landCombatEquipment;
     AirTargetCombatEquipment = airCombatEquipment;
@@ -159,7 +176,7 @@ let getAirBomberEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
     let landCombatEquipment = getLandTargetCombatEquipment equipmentDatum
     let navalCombatEquipment = getNavalTargetCombatEquipment equipmentDatum
-    {AirBomberEquipment.Equipment = equipment;
+    {AirBomberEquipment.BaseEquipment = equipment;
     MotorizedEquipment =  motorizedEquipment;
     LandTargetCombatEquipment = landCombatEquipment;
     NavalTargetCombatEquipment = navalCombatEquipment}
@@ -168,7 +185,7 @@ let getSubmarineEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
     let navalCombatEquipment = getNavalTargetCombatEquipment equipmentDatum
-    {SubmarineEquipment.Equipment = equipment;
+    {SubmarineEquipment.BaseEquipment = equipment;
     MotorizedEquipment =  motorizedEquipment;
     NavalTargetCombatEquipment = navalCombatEquipment}
 
@@ -178,7 +195,7 @@ let getSurfaceShipEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let landCombatEquipment = getLandTargetCombatEquipment equipmentDatum
     let airCombatEquipment = getAirTargetCombatEquipment equipmentDatum
     let navalCombatEquipment = getNavalTargetCombatEquipment equipmentDatum
-    {SurfaceShipEquipment.Equipment = equipment;
+    {SurfaceShipEquipment.BaseEquipment = equipment;
     MotorizedEquipment =  motorizedEquipment;
     LandTargetCombatEquipment = landCombatEquipment;
     AirTargetCombatEquipment = airCombatEquipment;
@@ -187,12 +204,25 @@ let getSurfaceShipEquipment (equipmentDatum: EquipmentContext.Equipment) =
 let getAircraftCarrierEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
-    {AircraftCarrierEquipment.Equipment = equipment;
+    {AircraftCarrierEquipment.BaseEquipment = equipment;
     MotorizedEquipment =  motorizedEquipment;}
 
-let getTransportEquipment (equipmentDatum: EquipmentContext.Equipment) =
+let getLandTransportEquipment (equipmentDatum: EquipmentContext.Equipment) =
     let equipment = getBaseEquipment equipmentDatum
     let motorizedEquipment = getMotorizedEquipment equipmentDatum
-    {TransportEquipment.Equipment = equipment; 
+    let trackedEquipment = getTrackedEquipment equipmentDatum motorizedEquipment
+    {LandTransportEquipment.BaseEquipment = equipment; 
+    TrackedEquipment =  trackedEquipment}
+
+let getAirTransportEquipment (equipmentDatum: EquipmentContext.Equipment) =
+    let equipment = getBaseEquipment equipmentDatum
+    let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    {AirTransportEquipment.BaseEquipment = equipment; 
+    MotorizedEquipment =  motorizedEquipment}
+
+let getSeaTransportEquipment (equipmentDatum: EquipmentContext.Equipment) =
+    let equipment = getBaseEquipment equipmentDatum
+    let motorizedEquipment = getMotorizedEquipment equipmentDatum
+    {SeaTransportEquipment.BaseEquipment = equipment; 
     MotorizedEquipment =  motorizedEquipment}
 

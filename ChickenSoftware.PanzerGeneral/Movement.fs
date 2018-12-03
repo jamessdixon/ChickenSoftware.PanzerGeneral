@@ -1,12 +1,13 @@
 ﻿module ChickenSoftware.PanzerGeneral.Movement
 
+open Unit
 open Tile
 open Board
 open UnitMapper
 
 let possibleMoves (unit:Unit) (tile:Tile) (board:Tile array) =
-    //Movement Points
-    //Fuel Remaining
+    let baseMovementPoints = getAllowedMovementPoints unit
+    ()
     //Tile Points -> kind of terrain + kind of equipment + condition
     //If another unit of same type on tile
 

@@ -22,15 +22,26 @@ type EntrenchableEquipment = {
 type MoveableEquipment = {
     MaximumMovementPoints: int;
     }
-
+    
 type MotorizedEquipment = {
     MoveableEquipment: MoveableEquipment
     MaximumFuel: int}
 
-type CombatEquipment = {
-    MaximumAmmo: int;
-    Initative: int;
-    }
+type FullTrackEquipment = | FullTrackEquipment of MotorizedEquipment
+type HalfTrackEquipment = | HalfTrackEquipment of MotorizedEquipment
+type WheeledEquipment = | WheeledEquipment of MotorizedEquipment
+
+type TrackedEquipment =
+| FullTrack of FullTrackEquipment
+| HalfTrack of HalfTrackEquipment
+
+type LandMotorizedEquipment =
+| Tracked of TrackedEquipment
+| Wheeled of WheeledEquipment
+
+type SeaMoveableEquipment = {MotorizedEquipment: MotorizedEquipment}
+type AirMoveableEquipment = {MoveableEquipment: MoveableEquipment}
+type CombatEquipment = {MaximumAmmo: int;Initative: int;}
 
 type LandTargetCombatEquipment = {
     CombatEquipment: CombatEquipment;
@@ -49,63 +60,63 @@ type NavalTargetCombatEquipment = {
     }
 
 type InfantryEquipment = {
-    Equipment: BaseEquipment; 
+    BaseEquipment: BaseEquipment; 
     EntrenchableEquipment: EntrenchableEquipment;
     MoveableEquipment: MoveableEquipment;
     LandTargetCombatEquipment: LandTargetCombatEquipment
     }
 
 type TankEquipment = {
-    Equipment: BaseEquipment; 
-    MotorizedEquipment: MotorizedEquipment;
+    BaseEquipment: BaseEquipment; 
+    FullTrackedEquipment: FullTrackEquipment;
     LandTargetCombatEquipment: LandTargetCombatEquipment
     }
 
 type ReconEquipment = {
-    Equipment: BaseEquipment; 
-    MotorizedEquipment: MotorizedEquipment;
+    BaseEquipment: BaseEquipment; 
+    LandMotorizedEquipment: LandMotorizedEquipment;
     LandTargetCombatEquipment: LandTargetCombatEquipment
     }
-
-type TankDestroyerEquipment = {
-    Equipment: BaseEquipment; 
-    MotorizedEquipment: MotorizedEquipment;
-    LandTargetCombatEquipment: LandTargetCombatEquipment
-    }
-
+    
 type AntiAirEquipment = {
-    Equipment: BaseEquipment; 
-    EntrenchableEquipment: EntrenchableEquipment;
+    BaseEquipment: BaseEquipment; 
+    TrackedEquipment: TrackedEquipment;
     AirTargetCombatEquipment: AirTargetCombatEquipment
     }
 
 type EmplacementEquipment = {
-    Equipment: BaseEquipment; 
+    BaseEquipment: BaseEquipment; 
     LandTargetCombatEquipment: LandTargetCombatEquipment
     AirTargetCombatEquipment: AirTargetCombatEquipment
     NavalTargetCombatEquipment: NavalTargetCombatEquipment
     }
     
 type AntiTankEquipment = {
-    Equipment: BaseEquipment; 
+    BaseEquipment: BaseEquipment; 
     EntrenchableEquipment: EntrenchableEquipment;
     MoveableEquipment: MoveableEquipment;
     LandTargetCombatEquipment: LandTargetCombatEquipment
     }
 
+type TankDestroyerEquipment = {
+    BaseEquipment: BaseEquipment; 
+    FullTrackedEquipment: FullTrackEquipment;
+    LandTargetCombatEquipment: LandTargetCombatEquipment
+    }
+
 type ArtilleryEquipment = {
-    Equipment: BaseEquipment
+    BaseEquipment: BaseEquipment
     MoveableEquipment: MoveableEquipment
     LandTargetCombatEquipment: LandTargetCombatEquipment
     }
 
 type SelfPropelledArtilleryEquipment = {
     ArtilleryEquipment: ArtilleryEquipment
-    MotorizedEquipment: MotorizedEquipment
+    TrackedEquipment: TrackedEquipment
     }
 
 type AirDefenseEquipment = {
-    Equipment: BaseEquipment
+    BaseEquipment: BaseEquipment
     MoveableEquipment: MoveableEquipment
     AirTargetCombatEquipment: AirTargetCombatEquipment
     }
@@ -117,11 +128,11 @@ type TowedAirDefenseEquipment = {
 
 type SelfPropelledAirDefenseEquipment = {
     AirDefenseEquipment: AirDefenseEquipment
-    MotorizedEquipment: MotorizedEquipment
+    TrackedEquipment: TrackedEquipment
     }
     
 type AirFighterEquipment = {
-    Equipment: BaseEquipment
+    BaseEquipment: BaseEquipment
     MotorizedEquipment: MotorizedEquipment
     LandTargetCombatEquipment: LandTargetCombatEquipment
     AirTargetCombatEquipment: AirTargetCombatEquipment
@@ -129,20 +140,20 @@ type AirFighterEquipment = {
     }
 
 type AirBomberEquipment = {
-    Equipment: BaseEquipment
+    BaseEquipment: BaseEquipment
     MotorizedEquipment: MotorizedEquipment
     LandTargetCombatEquipment: LandTargetCombatEquipment
     NavalTargetCombatEquipment: NavalTargetCombatEquipment
     }
 
 type SubmarineEquipment = {
-    Equipment: BaseEquipment
+    BaseEquipment: BaseEquipment
     MotorizedEquipment: MotorizedEquipment
     NavalTargetCombatEquipment: NavalTargetCombatEquipment
     }
 
 type SurfaceShipEquipment = {
-    Equipment: BaseEquipment
+    BaseEquipment: BaseEquipment
     MotorizedEquipment: MotorizedEquipment
     LandTargetCombatEquipment: LandTargetCombatEquipment
     AirTargetCombatEquipment: AirTargetCombatEquipment
@@ -150,11 +161,21 @@ type SurfaceShipEquipment = {
     }
 
 type AircraftCarrierEquipment = {
-    Equipment: BaseEquipment
+    BaseEquipment: BaseEquipment
     MotorizedEquipment: MotorizedEquipment
     }
 
-type TransportEquipment = {
-    Equipment: BaseEquipment
+type LandTransportEquipment = {
+    BaseEquipment: BaseEquipment
+    TrackedEquipment: TrackedEquipment
+    }
+
+type AirTransportEquipment = {
+    BaseEquipment: BaseEquipment
+    MotorizedEquipment: MotorizedEquipment;
+    }
+
+type SeaTransportEquipment = {
+    BaseEquipment: BaseEquipment
     MotorizedEquipment: MotorizedEquipment;
     }

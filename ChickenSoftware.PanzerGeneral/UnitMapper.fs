@@ -136,8 +136,9 @@ let getSelfPropelledArtilleryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit
     let unitStats = getUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
-    let equipment = getArtilleryEquipment equipmentDatum
-    let unit = {SelfPropelledArtilleryUnit.UnitStats = unitStats; CombatStats= combatStats; MotorizedMovementStats= motorizedMovementStats;Equipment = equipment;}
+    let equipment = getSelfPropelledArtilleryEquipment equipmentDatum
+    let unit = {SelfPropelledArtilleryUnit.UnitStats = unitStats; CombatStats= combatStats; 
+        MotorizedMovementStats= motorizedMovementStats;Equipment = equipment;}
     let atrillery = Artillery.SelfPropelled unit  
     let landCombat = LandCombat.Artillery atrillery
     let combat = Combat.Land landCombat
@@ -272,8 +273,8 @@ let getCapitalShipUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmen
 let getAircraftCarrierUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
     let unitStats = getUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
-    let equipment =  getTransportEquipment equipmentDatum
-    let transport = {TransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
+    let equipment =  getSeaTransportEquipment equipmentDatum
+    let transport = {SeaTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
     let unit = {AircraftCarrierUnit.TranportUnit=transport;Payload=None}
     let navalTransport = NavalTransport.AircraftCarrier unit
     let transport = Transport.Naval navalTransport
@@ -282,8 +283,8 @@ let getAircraftCarrierUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equi
 let getLandingCraftUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
     let unitStats = getUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
-    let equipment =  getTransportEquipment equipmentDatum
-    let transport = {TransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
+    let equipment =  getSeaTransportEquipment equipmentDatum
+    let transport = {SeaTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
     let unit = {LandingCraftUnit.TransportUnit=transport;Payload=None}
     let navalTransport = NavalTransport.LandingCraft unit
     let transport = Transport.Naval navalTransport
@@ -292,18 +293,16 @@ let getLandingCraftUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipme
 let getLandTransportUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
     let unitStats = getUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
-    let equipment =  getTransportEquipment equipmentDatum
-    let transport = {TransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
-    let unit = {LandTransportUnit.TransportUnit=transport;Payload=None}
+    let equipment =  getLandTransportEquipment equipmentDatum
+    let unit = {LandTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment;Payload=None}
     let transport = Transport.Land unit
     Unit.Transport transport
 
 let getAirTransportUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
     let unitStats = getUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
-    let equipment =  getTransportEquipment equipmentDatum
-    let transport = {TransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
-    let unit = {AirTransportUnit.TransportUnit=transport;Payload=None}
+    let equipment =  getAirTransportEquipment equipmentDatum
+    let unit = {AirTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment;Payload=None}
     let transport = Transport.Air unit
     Unit.Transport transport
 
@@ -353,64 +352,60 @@ let getBaseEquipment unit =
             match ac with
             | AirCombat.Fighter acf ->
                 match  acf with
-                | Fighter.Prop acfp -> acfp.Equipment.Equipment
-                | Fighter.Jet acfj -> acfj.Equipment.Equipment
+                | Fighter.Prop acfp -> acfp.Equipment.BaseEquipment
+                | Fighter.Jet acfj -> acfj.Equipment.BaseEquipment
             | AirCombat.Bomber acb ->
                 match acb with
-                | Bomber.Tactical acbt -> acbt.Equipment.Equipment
-                | Bomber.Strategic acbs -> acbs.Equipment.Equipment
+                | Bomber.Tactical acbt -> acbt.Equipment.BaseEquipment
+                | Bomber.Strategic acbs -> acbs.Equipment.BaseEquipment
         | Combat.Land lc ->
             match lc with 
             | LandCombat.AirDefense lcad ->
                 match lcad with 
-                | AirDefense.SelfPropelled lcadsp -> lcadsp.Equipment.Equipment
-                | AirDefense.Towed lcadt -> lcadt.Equipment.AirDefenseEquipment.Equipment 
-            | LandCombat.AntiAir lcaa -> lcaa.Equipment.Equipment
+                | AirDefense.SelfPropelled lcadsp -> lcadsp.Equipment.AirDefenseEquipment.BaseEquipment
+                | AirDefense.Towed lcadt -> lcadt.Equipment.AirDefenseEquipment.BaseEquipment 
+            | LandCombat.AntiAir lcaa -> lcaa.Equipment.BaseEquipment
             | LandCombat.AntiTank lcat ->
                 match lcat with
-                | AntiTank.Light lcatl -> lcatl.Equipment.Equipment
-                | AntiTank.Heavy lcath -> lcath.Equipment.Equipment
+                | AntiTank.Light lcatl -> lcatl.Equipment.BaseEquipment
+                | AntiTank.Heavy lcath -> lcath.Equipment.BaseEquipment
             | LandCombat.Artillery lca ->
                 match lca with
                 | Artillery.Towed lcat ->
                     match lcat with 
-                    | TowedArtillery.Light lcatl -> lcatl.Equipment.Equipment
-                    | TowedArtillery.Heavy lcath -> lcath.Equipment.Equipment
-                | Artillery.SelfPropelled lcasp -> lcasp.Equipment.Equipment    
+                    | TowedArtillery.Light lcatl -> lcatl.Equipment.BaseEquipment
+                    | TowedArtillery.Heavy lcath -> lcath.Equipment.BaseEquipment
+                | Artillery.SelfPropelled lcasp -> lcasp.Equipment.ArtilleryEquipment.BaseEquipment  
             | LandCombat.Emplacement lce -> 
                 match lce with
-                | Emplacement.Fort lcef -> lcef.Equipment.Equipment
-                | Emplacement.Strongpoint lces -> lces.Equipment.Equipment
+                | Emplacement.Fort lcef -> lcef.Equipment.BaseEquipment
+                | Emplacement.Strongpoint lces -> lces.Equipment.BaseEquipment
             | LandCombat.Infantry lci ->
                 match lci with 
-                | Infantry.Airborne lcia -> lcia.Equipment.Equipment
-                | Infantry.Basic lcib -> lcib.Equipment.Equipment
-                | Infantry.Bridging lcig -> lcig.Equipment.Equipment
-                | Infantry.Engineer lcie -> lcie.Equipment.Equipment
-                | Infantry.HeavyWeapon lcihw -> lcihw.Equipment.Equipment
-                | Infantry.Ranger lcir -> lcir.Equipment.Equipment
-            | LandCombat.Recon lcr -> lcr.Equipment.Equipment
-            | LandCombat.Tank lct -> lct.Equipment.Equipment
-            | LandCombat.TankDestroyer lctd -> lctd.Equipment.Equipment
+                | Infantry.Airborne lcia -> lcia.Equipment.BaseEquipment
+                | Infantry.Basic lcib -> lcib.Equipment.BaseEquipment
+                | Infantry.Bridging lcig -> lcig.Equipment.BaseEquipment
+                | Infantry.Engineer lcie -> lcie.Equipment.BaseEquipment
+                | Infantry.HeavyWeapon lcihw -> lcihw.Equipment.BaseEquipment
+                | Infantry.Ranger lcir -> lcir.Equipment.BaseEquipment
+            | LandCombat.Recon lcr -> lcr.Equipment.BaseEquipment
+            | LandCombat.Tank lct -> lct.Equipment.BaseEquipment
+            | LandCombat.TankDestroyer lctd -> lctd.Equipment.BaseEquipment
         | Combat.Naval nc ->
             match nc with
-            | NavalCombat.CapitalShip nccs -> nccs.Equipment.Equipment 
-            | NavalCombat.Destroyer ncd -> ncd.Equipment.Equipment
-            | NavalCombat.Submarine ncs -> ncs.Equipment.Equipment
+            | NavalCombat.CapitalShip nccs -> nccs.Equipment.BaseEquipment 
+            | NavalCombat.Destroyer ncd -> ncd.Equipment.BaseEquipment
+            | NavalCombat.Submarine ncs -> ncs.Equipment.BaseEquipment
     | Unit.Transport t -> 
         match t with 
-        | Transport.Air at -> at.TransportUnit.Equipment.Equipment
-        | Transport.Land lt -> lt.TransportUnit.Equipment.Equipment
+        | Transport.Air at -> at.Equipment.BaseEquipment
+        | Transport.Land lt -> lt.Equipment.BaseEquipment
         | Transport.Naval nt -> 
             match nt with
-            | NavalTransport.AircraftCarrier ntac -> ntac.TranportUnit.Equipment.Equipment
-            | NavalTransport.LandingCraft ntlc -> ntlc.TransportUnit.Equipment.Equipment
+            | NavalTransport.AircraftCarrier ntac -> ntac.TranportUnit.Equipment.BaseEquipment
+            | NavalTransport.LandingCraft ntlc -> ntlc.TransportUnit.Equipment.BaseEquipment
 
-let getUnitIconId unit =
-    let equipment = getBaseEquipment unit
-    equipment.IconId
-
-let getMovementPoints unit =
+let getMoveableEquipment unit =
     match unit with 
     | Unit.Combat c -> 
         match c with 
@@ -418,55 +413,162 @@ let getMovementPoints unit =
             match ac with
             | AirCombat.Fighter acf ->
                 match  acf with
-                | Fighter.Prop acfp -> acfp.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-                | Fighter.Jet acfj -> acfj.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
+                | Fighter.Prop acfp -> Some acfp.Equipment.MotorizedEquipment.MoveableEquipment
+                | Fighter.Jet acfj -> Some acfj.Equipment.MotorizedEquipment.MoveableEquipment
             | AirCombat.Bomber acb ->
                 match acb with
-                | Bomber.Tactical acbt -> acbt.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-                | Bomber.Strategic acbs -> acbs.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
+                | Bomber.Tactical acbt -> Some acbt.Equipment.MotorizedEquipment.MoveableEquipment
+                | Bomber.Strategic acbs -> Some acbs.Equipment.MotorizedEquipment.MoveableEquipment
         | Combat.Land lc ->
             match lc with 
             | LandCombat.AirDefense lcad ->
                 match lcad with 
-                | AirDefense.SelfPropelled lcadsp -> lcadsp.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-                | AirDefense.Towed lcadt -> lcadt.Equipment.AirDefenseEquipment.MoveableEquipment.MaximumMovementPoints
-            | LandCombat.AntiAir lcaa -> 1
+                | AirDefense.SelfPropelled lcadsp -> Some lcadsp.Equipment.AirDefenseEquipment.MoveableEquipment
+                | AirDefense.Towed lcadt -> Some lcadt.Equipment.AirDefenseEquipment.MoveableEquipment 
+            | LandCombat.AntiAir lcaa -> 
+                let trackedEquipment = lcaa.Equipment.TrackedEquipment
+                match trackedEquipment with
+                | TrackedEquipment.FullTrack lcaaft -> 
+                    match lcaaft with
+                    | FullTrackEquipment fte -> Some fte.MoveableEquipment
+                | TrackedEquipment.HalfTrack lcaaht ->
+                    match lcaaht with
+                    | HalfTrackEquipment fte -> Some fte.MoveableEquipment
             | LandCombat.AntiTank lcat ->
                 match lcat with
-                | AntiTank.Light lcatl -> lcatl.Equipment.MoveableEquipment.MaximumMovementPoints
-                | AntiTank.Heavy lcath -> lcath.Equipment.MoveableEquipment.MaximumMovementPoints
+                | AntiTank.Light lcatl -> Some lcatl.Equipment.MoveableEquipment
+                | AntiTank.Heavy lcath -> Some lcath.Equipment.MoveableEquipment
             | LandCombat.Artillery lca ->
                 match lca with
                 | Artillery.Towed lcat ->
                     match lcat with 
-                    | TowedArtillery.Light lcatl -> lcatl.Equipment.MoveableEquipment.MaximumMovementPoints
-                    | TowedArtillery.Heavy lcath -> lcath.Equipment.MoveableEquipment.MaximumMovementPoints
-                | Artillery.SelfPropelled lcasp -> lcasp.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
+                    | TowedArtillery.Light lcatl -> Some lcatl.Equipment.MoveableEquipment
+                    | TowedArtillery.Heavy lcath -> Some lcath.Equipment.MoveableEquipment
+                | Artillery.SelfPropelled lcasp -> 
+                    match lcasp.Equipment.TrackedEquipment with
+                    | TrackedEquipment.FullTrack lcaaft -> 
+                        match lcaaft with | FullTrackEquipment fte -> Some fte.MoveableEquipment
+                    | TrackedEquipment.HalfTrack lcaaht ->
+                        match lcaaht with | HalfTrackEquipment fte -> Some fte.MoveableEquipment
             | LandCombat.Emplacement lce -> 
                 match lce with
-                | Emplacement.Fort lcef -> 0
-                | Emplacement.Strongpoint lces -> 0
+                | Emplacement.Fort lcef -> None
+                | Emplacement.Strongpoint lces -> None
             | LandCombat.Infantry lci ->
                 match lci with 
-                | Infantry.Airborne lcia -> lcia.Equipment.MoveableEquipment.MaximumMovementPoints
-                | Infantry.Basic lcib -> lcib.Equipment.MoveableEquipment.MaximumMovementPoints
-                | Infantry.Bridging lcig -> lcig.Equipment.MoveableEquipment.MaximumMovementPoints
-                | Infantry.Engineer lcie -> lcie.Equipment.MoveableEquipment.MaximumMovementPoints
-                | Infantry.HeavyWeapon lcihw -> lcihw.Equipment.MoveableEquipment.MaximumMovementPoints
-                | Infantry.Ranger lcir -> lcir.Equipment.MoveableEquipment.MaximumMovementPoints
-            | LandCombat.Recon lcr -> lcr.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-            | LandCombat.Tank lct -> lct.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-            | LandCombat.TankDestroyer lctd -> lctd.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
+                | Infantry.Airborne lcia -> Some lcia.Equipment.MoveableEquipment
+                | Infantry.Basic lcib -> Some lcib.Equipment.MoveableEquipment
+                | Infantry.Bridging lcig -> Some lcig.Equipment.MoveableEquipment
+                | Infantry.Engineer lcie -> Some lcie.Equipment.MoveableEquipment
+                | Infantry.HeavyWeapon lcihw -> Some lcihw.Equipment.MoveableEquipment
+                | Infantry.Ranger lcir -> Some lcir.Equipment.MoveableEquipment
+            | LandCombat.Recon lcr -> 
+                match lcr.Equipment.LandMotorizedEquipment with
+                | LandMotorizedEquipment.Tracked lcrt ->
+                    match lcrt with
+                    | FullTrack lcrtft -> match lcrtft with | FullTrackEquipment fte -> Some fte.MoveableEquipment
+                    | HalfTrack lcrtht -> match lcrtht with | HalfTrackEquipment hte -> Some hte.MoveableEquipment
+                | LandMotorizedEquipment.Wheeled lcrw -> 
+                    match lcrw with | WheeledEquipment we -> Some we.MoveableEquipment
+            | LandCombat.Tank lct -> 
+                match lct.Equipment.FullTrackedEquipment with | FullTrackEquipment fte -> Some fte.MoveableEquipment
+            | LandCombat.TankDestroyer lctd -> 
+                match lctd.Equipment.FullTrackedEquipment with| FullTrackEquipment fte -> Some fte.MoveableEquipment
         | Combat.Naval nc ->
             match nc with
-            | NavalCombat.CapitalShip nccs -> nccs.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints 
-            | NavalCombat.Destroyer ncd -> ncd.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-            | NavalCombat.Submarine ncs -> ncs.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
+            | NavalCombat.CapitalShip nccs -> Some nccs.Equipment.MotorizedEquipment.MoveableEquipment 
+            | NavalCombat.Destroyer ncd -> Some ncd.Equipment.MotorizedEquipment.MoveableEquipment
+            | NavalCombat.Submarine ncs -> Some ncs.Equipment.MotorizedEquipment.MoveableEquipment
     | Unit.Transport t -> 
         match t with 
-        | Transport.Air at -> at.TransportUnit.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-        | Transport.Land lt -> lt.TransportUnit.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
+        | Transport.Air at -> match at with | atu -> Some atu.Equipment.MotorizedEquipment.MoveableEquipment
+        | Transport.Land lt -> 
+            match lt with 
+            | ltu -> 
+                match ltu.Equipment.TrackedEquipment with
+                | FullTrack lcrtft -> match lcrtft with | FullTrackEquipment fte -> Some fte.MoveableEquipment
+                | HalfTrack lcrtht -> match lcrtht with | HalfTrackEquipment hte -> Some hte.MoveableEquipment
         | Transport.Naval nt -> 
             match nt with
-            | NavalTransport.AircraftCarrier ntac -> ntac.TranportUnit.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
-            | NavalTransport.LandingCraft ntlc -> ntlc.TransportUnit.Equipment.MotorizedEquipment.MoveableEquipment.MaximumMovementPoints
+            | NavalTransport.AircraftCarrier ntac -> Some ntac.TranportUnit.Equipment.MotorizedEquipment.MoveableEquipment
+            | NavalTransport.LandingCraft ntlc -> Some ntlc.TransportUnit.Equipment.MotorizedEquipment.MoveableEquipment
+
+let getMotorizedMovementStats unit =
+    match unit with 
+    | Unit.Combat c -> 
+        match c with 
+        | Combat.Air ac -> 
+            match ac with
+            | AirCombat.Fighter acf ->
+                match  acf with
+                | Fighter.Prop acfp -> Some acfp.MotorizedMovementStats
+                | Fighter.Jet acfj -> Some acfj.MotorizedMovementStats
+            | AirCombat.Bomber acb ->
+                match acb with
+                | Bomber.Tactical acbt -> Some acbt.MotorizedMovementStats
+                | Bomber.Strategic acbs -> Some acbs.MotorizedMovementStats
+        | Combat.Land lc ->
+            match lc with 
+            | LandCombat.AirDefense lcad ->
+                match lcad with 
+                | AirDefense.SelfPropelled lcadsp -> Some lcadsp.MotorizedMovementStats
+                | AirDefense.Towed lcadt -> None
+            | LandCombat.AntiAir lcaa -> Some lcaa.MotorizedMovementStats
+            | LandCombat.AntiTank lcat ->
+                match lcat with
+                | AntiTank.Light lcatl -> None
+                | AntiTank.Heavy lcath -> None
+            | LandCombat.Artillery lca ->
+                match lca with
+                | Artillery.Towed lcat ->
+                    match lcat with 
+                    | TowedArtillery.Light lcatl -> None
+                    | TowedArtillery.Heavy lcath -> None
+                | Artillery.SelfPropelled lcasp -> Some lcasp.MotorizedMovementStats
+            | LandCombat.Emplacement lce -> 
+                match lce with
+                | Emplacement.Fort lcef -> None
+                | Emplacement.Strongpoint lces -> None
+            | LandCombat.Infantry lci ->
+                match lci with 
+                | Infantry.Airborne lcia -> None
+                | Infantry.Basic lcib -> None
+                | Infantry.Bridging lcig -> None
+                | Infantry.Engineer lcie -> None
+                | Infantry.HeavyWeapon lcihw -> None
+                | Infantry.Ranger lcir -> None
+            | LandCombat.Recon lcr -> Some lcr.MotorizedMovementStats
+            | LandCombat.Tank lct -> Some lct.MotorizedMovementStats
+            | LandCombat.TankDestroyer lctd -> Some lctd.MotorizedMovementStats
+        | Combat.Naval nc ->
+            match nc with
+            | NavalCombat.CapitalShip nccs -> Some nccs.MotorizedMovementStats 
+            | NavalCombat.Destroyer ncd -> Some ncd.MotorizedMovementStats
+            | NavalCombat.Submarine ncs -> Some ncs.MotorizedMovementStats
+    | Unit.Transport t -> 
+        match t with 
+        | Transport.Air at -> None
+        | Transport.Land lt -> None
+        | Transport.Naval nt -> 
+            match nt with
+            | NavalTransport.AircraftCarrier ntac -> Some ntac.TranportUnit.MotorizedMovementStats
+            | NavalTransport.LandingCraft ntlc -> Some ntlc.TransportUnit.MotorizedMovementStats
+
+let getUnitIconId unit =
+    let equipment = getBaseEquipment unit
+    equipment.IconId
+
+let getAllowedMovementPoints (unit:Unit) =
+    let moveableEquipment = getMoveableEquipment unit
+    let motorizedMovementStats = getMotorizedMovementStats unit
+    match moveableEquipment, motorizedMovementStats with 
+    | Some mv, Some mms -> 
+        match mv.MaximumMovementPoints > mms.Fuel with
+        | true -> mms.Fuel
+        | false -> mv.MaximumMovementPoints
+    | Some mv, None -> mv.MaximumMovementPoints
+    | _ , _ -> 0
+
+
+
+

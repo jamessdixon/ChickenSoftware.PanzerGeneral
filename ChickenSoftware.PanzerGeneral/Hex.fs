@@ -37,15 +37,15 @@ let getTerrainFrame (baseTile: BaseTile) (scale:float) =
         | Terrain.Land l -> 
             match l with
             | Land.Airfield bt -> bt
-            | Land.Bocage (bt,i) -> bt
+            | Land.Bocage it -> it.BaseTerrain
             | Land.City bt -> bt
-            | Land.Clear (bt,i) -> bt
+            | Land.Clear it -> it.BaseTerrain
             | Land.Desert bt -> bt
             | Land.Escarpment bt -> bt
             | Land.Forest bt -> bt
-            | Land.Fortificaiton (bt,i) -> bt
+            | Land.Fortificaiton it -> it.BaseTerrain
             | Land.Mountain bt -> bt
-            | Land.Rough (bt,i) -> bt
+            | Land.Rough it -> it.BaseTerrain
             | Land.RoughDesert bt -> bt
             | Land.Swamp bt -> bt
     let tileId = baseTerrain.Id

@@ -131,11 +131,11 @@ type Combat =
 | Air of AirCombat
 | Naval of NavalCombat
 
-type TransportUnit = {UnitStats: UnitStats; MotorizedMovementStats:MotorizedMovementStats; Equipment: TransportEquipment}
-type LandTransportUnit = {TransportUnit: TransportUnit; Payload: LandTransportPayload option}
-type AirTransportUnit = {TransportUnit: TransportUnit; Payload: AirTransportPayload option}
-type LandingCraftUnit = {TransportUnit: TransportUnit; Payload: NavalTransportPayload option}
-type AircraftCarrierUnit = {TranportUnit: TransportUnit; Payload: AircraftCarrierPayload list option}
+type LandTransportUnit = {UnitStats: UnitStats; MotorizedMovementStats:MotorizedMovementStats;Equipment: LandTransportEquipment; Payload: LandTransportPayload option}
+type AirTransportUnit = {UnitStats: UnitStats; MotorizedMovementStats:MotorizedMovementStats;Equipment: AirTransportEquipment; Payload: AirTransportPayload option}
+type SeaTransportUnit = {UnitStats: UnitStats; MotorizedMovementStats:MotorizedMovementStats;Equipment: SeaTransportEquipment}
+type LandingCraftUnit = {TransportUnit: SeaTransportUnit; Payload: NavalTransportPayload option}
+type AircraftCarrierUnit = {TranportUnit: SeaTransportUnit; Payload: AircraftCarrierPayload list option}
 
 type NavalTransport =
 | LandingCraft of LandingCraftUnit
