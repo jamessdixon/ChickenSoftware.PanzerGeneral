@@ -1,0 +1,16 @@
+{"dataroot":{"Nation":[
+{"NationId":"-1","NationDescription":"None","ImageXCoordinate":"0","ImageYCoordinate":"0","SideId":"2"},
+{"NationId":"2","NationDescription":"Allied Forces","ImageXCoordinate":"60","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"3","NationDescription":"Bulgaria","ImageXCoordinate":"120","ImageYCoordinate":"0","SideId":"0"},
+{"NationId":"7","NationDescription":"France","ImageXCoordinate":"360","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"8","NationDescription":"German","ImageXCoordinate":"420","ImageYCoordinate":"0","SideId":"0"},
+{"NationId":"9","NationDescription":"Greece","ImageXCoordinate":"480","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"10","NationDescription":"United States","ImageXCoordinate":"540","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"11","NationDescription":"Hungray","ImageXCoordinate":"600","ImageYCoordinate":"0","SideId":"0"},
+{"NationId":"13","NationDescription":"Italy","ImageXCoordinate":"720","ImageYCoordinate":"0","SideId":"0"},
+{"NationId":"15","NationDescription":"Norway","ImageXCoordinate":"840","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"16","NationDescription":"Poland","ImageXCoordinate":"900","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"18","NationDescription":"Romania","ImageXCoordinate":"1020","ImageYCoordinate":"0","SideId":"0"},
+{"NationId":"20","NationDescription":"Soviet Union","ImageXCoordinate":"1140","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"23","NationDescription":"Great Britain","ImageXCoordinate":"1320","ImageYCoordinate":"0","SideId":"1"},
+{"NationId":"24","NationDescription":"Yugoslavia","ImageXCoordinate":"1380","ImageYCoordinate":"0","SideId":"1"}]}}
