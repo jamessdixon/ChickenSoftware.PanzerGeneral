@@ -14,9 +14,9 @@ let getLandConditionMultiplier (landCondition: LandCondition) (unit:Unit)=
 
 let getTileMovementPoints (mcs: MovementCostContext.MovementCost array) (unit:Unit) =
     let mc = mcs |> Array.head
-    mc.MovementTypeId
-    mc.TerrainConditionId
-    mc.TerrainTypeId
+    //mc.MovementTypeId
+    //mc.TerrainConditionId
+    //mc.TerrainTypeId
 
 
 let IsTargetTileReachable (unit:Unit) =
