@@ -1,5 +1,4 @@
-﻿
-module ChickenSoftware.PanzerGeneral.Equipment
+﻿module ChickenSoftware.PanzerGeneral.Equipment
 
 open Nation
 

@@ -1,1 +1,5 @@
-{"dataroot":{"WeatherZone":[{"WeatherZoneId":"0","WeatherZoneDescription":"Desert"},{"WeatherZoneId":"1","WeatherZoneDescription":"Mediterrian"},{"WeatherZoneId":"2","WeatherZoneDescription":"Western Europe"},{"WeatherZoneId":"3","WeatherZoneDescription":"Eastern Europe"}]}}
+{"dataroot":{"WeatherZone":[
+{"WeatherZoneId":"0","WeatherZoneDescription":"Desert"},
+{"WeatherZoneId":"1","WeatherZoneDescription":"Mediterrian"},
+{"WeatherZoneId":"2","WeatherZoneDescription":"Western Europe"},
+{"WeatherZoneId":"3","WeatherZoneDescription":"Eastern Europe"}]}}

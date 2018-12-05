@@ -558,7 +558,7 @@ let getUnitIconId unit =
     let equipment = getBaseEquipment unit
     equipment.IconId
 
-let getAllowedMovementPoints (unit:Unit) =
+let getUnitMovementPoints (unit:Unit) =
     let moveableEquipment = getMoveableEquipment unit
     let motorizedMovementStats = getMotorizedMovementStats unit
     match moveableEquipment, motorizedMovementStats with 

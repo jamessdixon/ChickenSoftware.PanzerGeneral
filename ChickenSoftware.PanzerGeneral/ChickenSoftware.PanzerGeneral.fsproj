@@ -3844,9 +3844,11 @@
     <Compile Include="UnitMapper.fs" />
     <Compile Include="Terrain.fs" />
     <Compile Include="Tile.fs" />
-    <Compile Include="Board.fs" />
     <Compile Include="Movement.fs" />
+    <Compile Include="MovementGenerator.fs" />
+    <Compile Include="MovementCalculator.fs" />
     <Compile Include="Combat.fs" />
+    <Compile Include="Board.fs" />
     <Compile Include="Hex.fs" />
     <Compile Include="Surface.fs" />
     <Compile Include="App.fs" />

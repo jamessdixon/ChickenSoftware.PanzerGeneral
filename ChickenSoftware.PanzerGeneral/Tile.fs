@@ -46,18 +46,5 @@ let getTerrainMovementCost (terrain: Terrain) =
             | Land.Swamp bt -> 1
         | Terrain.Sea _ -> 1
         | Terrain.Port _ -> 1
-
-let getLandConditionMultiplier (landCondition: LandCondition) =
-    match landCondition with
-    | LandCondition.Dry -> 1
-    | LandCondition.Frozen -> 2
-    | LandCondition.Muddy -> 2
-
-let getMovementCost (tile:Tile) =
-    let baseTile = getBaseTileFromTile tile
-    let terrain = baseTile.Terrain
-    let baseCost = 0
-    let multiplier = 0
-    baseCost * multiplier
-
+        
 
