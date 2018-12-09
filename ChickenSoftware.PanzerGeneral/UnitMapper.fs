@@ -3,9 +3,8 @@
 open Unit
 open Nation
 open Equipment
-open UnitGenerator
+open SupportData
 open EquipmentMapper
-open EquipmentGenerator
 
 let getReinforcementType id =
     match id with 

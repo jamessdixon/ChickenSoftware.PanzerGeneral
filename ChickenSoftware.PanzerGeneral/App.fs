@@ -4,20 +4,30 @@ open System
 open Xamarin.Forms
 open System.Reflection
 
+open UnitMapper
+open Hex
+open Tile
+open Board
+open Terrain
+open Surface
+open UnitMapper
+open SupportData
+
+
 type App() as app =
     inherit Application()
 
     let handleTapEvent (sender:Object) (e:EventArgs) =
-        //let value = sender.ToString()
-        //let tileLayout = sender :?> Demo.TileFrame
-        //let tileId = tileLayout.TileId.ToString()
-        //app.MainPage.DisplayAlert("Tile Pressed", tileId, "OK") |> ignore
+        let tileFrame = sender :?> TileFrame
+        let tile = tileFrame.Tile
+        let baseTile = getBaseTile tile
+        let tileId = baseTile.Id.ToString()
+        app.MainPage.DisplayAlert("Tile Pressed", tileId, "OK") |> ignore
         ()
-
     do
         let assembly = IntrospectionExtensions.GetTypeInfo(typeof<App>).Assembly
-        let scrollView = Surface.populateSurface assembly 0
+        let scrollView = populateSurface assembly 0
         base.MainPage <- ContentPage(Content = scrollView)
         let tapEventHandler = new EventHandler(handleTapEvent)
-        Demo.tapRecognizer.Tapped.AddHandler(tapEventHandler)
-  
+        tapRecognizer.Tapped.AddHandler(tapEventHandler)
+

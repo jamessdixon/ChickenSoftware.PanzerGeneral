@@ -2,7 +2,7 @@
 
 open Nation
 open Equipment
-open EquipmentGenerator
+open SupportData
 
 let getBaseEquipment (ed: EquipmentContext.Equipment) =
     let nation = getNation ed.NationId 

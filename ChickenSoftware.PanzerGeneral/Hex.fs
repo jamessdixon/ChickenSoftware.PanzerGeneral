@@ -6,6 +6,12 @@ open Terrain
 open UnitMapper
 open Xamarin.Forms
 
+type TileFrame(tile:Tile) =
+    inherit Frame()
+    member this.Tile = tile
+
+let tapRecognizer = new TapGestureRecognizer()
+
 let getImage path =
     let image = new Image()
     image.Source <- ImageSource.FromResource(path)
@@ -28,42 +34,25 @@ let getRectangle columnIndex rowIndex scale =
     let rectangle = new Rectangle(x,y,width,height)
     rectangle
 
-let getTerrainFrame (baseTile: BaseTile) (scale:float) =
-    let terrain = baseTile.Terrain
-    let baseTerrain =    
-        match terrain with 
-        | Terrain.Sea bt -> bt
-        | Terrain.Port bt -> bt
-        | Terrain.Land l -> 
-            match l with
-            | Land.Airfield bt -> bt
-            | Land.Bocage it -> it.BaseTerrain
-            | Land.City bt -> bt
-            | Land.Clear it -> it.BaseTerrain
-            | Land.Desert bt -> bt
-            | Land.Escarpment bt -> bt
-            | Land.Forest bt -> bt
-            | Land.Fortificaiton it -> it.BaseTerrain
-            | Land.Mountain bt -> bt
-            | Land.Rough it -> it.BaseTerrain
-            | Land.RoughDesert bt -> bt
-            | Land.Swamp bt -> bt
+let getTerrainFrame (tile: Tile) (scale:float) =
+    let baseTile = getBaseTile tile
+    let baseTerrain = getBaseTerrainFromTerrain baseTile.Terrain
     let tileId = baseTerrain.Id
     let locatorPrefix = 
         match baseTerrain.Condition with 
         | LandCondition.Dry -> "tacmapdry"
         | LandCondition.Frozen -> "tacmapfrozen"
         | LandCondition.Muddy -> "tacmapmuddy"
-    let frame = new Frame()
+    let frame = new TileFrame(tile)
     let terrainImageLocator = locatorPrefix + tileId.ToString()
     let image = getImage terrainImageLocator
     image.Scale <- (scale + 0.6)
     frame.BackgroundColor <- Color.Transparent
     frame.BorderColor <- Color.Transparent
-    frame.InputTransparent <- false
     frame.Content <- image
+    frame.GestureRecognizers.Add(tapRecognizer)
     frame
-    
+
 let getSingleUnitFrame (iconId:int) (scale:float) =
     let frame = new Frame()
     let path = "tacicons" + iconId.ToString()
@@ -85,7 +74,7 @@ let getMultiUnitFrame (id:int)(scale:float) =
     frame.InputTransparent <- true
     frame.Content <- image
     Some frame
-    
+
 let getEarthUnitFrame (baseTile: BaseTile) (scale:float) =
     match (baseTile.EarthUnit), (baseTile.SkyUnit) with
     | Some eu, None -> 
@@ -124,28 +113,25 @@ let getNationFrame (tile: Tile) (scale:float) =
     //frame.Content <- image
     Some frame
 
-let createHex (tile: Tile) (scale:float) =
-    let layout = new AbsoluteLayout()
-    let baseTile = getBaseTileFromTile tile
+let createHex (layout:AbsoluteLayout) (tile: Tile) (scale:float) =
+    let baseTile = getBaseTile tile
     let rectangle = getRectangle baseTile.ColumnNumber baseTile.RowNumber scale
-    let terrainFrame = getTerrainFrame baseTile scale
+    let terrainFrame = getTerrainFrame tile scale
     layout.Children.Add(terrainFrame,rectangle)
     let earthUnitFrame = getEarthUnitFrame baseTile scale
     match earthUnitFrame with 
     | Some f -> layout.Children.Add(f,rectangle)
     | None -> ()
-    let skyUnitFrame = getSkyUnitFrame baseTile scale
-    match skyUnitFrame with 
-    | Some f -> layout.Children.Add(f,rectangle)
-    | None -> ()
-    let strengthFrame = getStrengthFrame tile scale
-    match strengthFrame with 
-    | Some f -> layout.Children.Add(f,rectangle)
-    | None -> ()
-    let nationFrame = getNationFrame tile scale
-    match nationFrame with 
-    | Some f -> layout.Children.Add(f,rectangle)
-    | None -> ()
-    layout
+    //let skyUnitFrame = getSkyUnitFrame baseTile scale
+    //match skyUnitFrame with 
+    //| Some f -> layout.Children.Add(f,rectangle)
+    //| None -> ()
+    //let strengthFrame = getStrengthFrame tile scale
+    //match strengthFrame with 
+    //| Some f -> layout.Children.Add(f,rectangle)
+    //| None -> ()
+    //let nationFrame = getNationFrame tile scale
+    //match nationFrame with 
+    //| Some f -> layout.Children.Add(f,rectangle)
 
 

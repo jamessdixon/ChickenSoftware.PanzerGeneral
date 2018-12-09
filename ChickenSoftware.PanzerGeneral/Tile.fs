@@ -23,7 +23,7 @@ type Tile =
 | Regular of BaseTile
 | Victory of VictoryTile
 
-let getBaseTileFromTile (tile:Tile) =
+let getBaseTile (tile:Tile) =
     match tile with
     | Tile.Regular bt -> bt
     | Tile.Victory vt -> vt.BaseTile

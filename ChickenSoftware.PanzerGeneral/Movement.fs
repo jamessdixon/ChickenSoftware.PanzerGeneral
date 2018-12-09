@@ -13,6 +13,17 @@ type UnitMovementType =
     | Water
     | AllTerrain
 
+let getUnitMovementTypeId (unitMovementType:UnitMovementType) =
+    match unitMovementType with
+    | Tracked -> 1
+    | HalfTracked -> 2
+    | Wheeled -> 3
+    | Walk -> 4
+    | None -> 5
+    | Air -> 6
+    | Water -> 7
+    | AllTerrain -> 8
+
 let getUnitMovementType (unit: Unit) =
     match unit with 
     | Unit.Combat c -> 

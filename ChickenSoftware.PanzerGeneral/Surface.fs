@@ -18,13 +18,12 @@ let createLayout numberOfTiles scale =
     layout
 
 let populateSurface (assembly:Assembly) (scenarioId:int) =
-    let layout = new AbsoluteLayout()
     let board = createBoard assembly scenarioId LandCondition.Dry
     let scale = 1.5
+    let numberOfTiles = board |> Seq.length
+    let layout = createLayout numberOfTiles scale
     board 
-    |> Array.map(fun t -> createHex t scale)
-    |> Array.iter(fun h -> layout.Children.Add(h))
-
+    |> Array.iter(fun t -> createHex layout t scale)
     let scrollView = new ScrollView()
     scrollView.Orientation <- ScrollOrientation.Both
     scrollView.Content <- layout

@@ -16,7 +16,5 @@ let getEquipmentData (assembly:Assembly) =
     let equipment = EquipmentContext.Parse(json)
     equipment.Dataroot.Equipment
 
-let getEquipmentDatum equipmentId assembly =
-    let equipmentData = getEquipmentData assembly
-    equipmentData |> Array.tryFind(fun ed -> ed.EquipmentId = equipmentId)
+
 

@@ -15,13 +15,21 @@ type TileImage(tileId:int) =
           inherit Image()
           member this.TileId = tileId
 
+type TileLayout(tileId:int) =
+    inherit AbsoluteLayout()
+    member this.TileId = tileId
+
+type TileFrame(tileId:int) =
+    inherit Frame()
+    member this.TileId = tileId
+
 let tapRecognizer = new TapGestureRecognizer()
 
 let getJson (assembly:Assembly) (fileName:string) =
     let stream = assembly.GetManifestResourceStream(fileName);
     let reader = new StreamReader(stream)
     reader.ReadToEnd()
-       
+
 let getTiles (scenarioId:int) (assembly:Assembly) =
     let json = getJson assembly "scenariotile"
     let scenarioTile = TileContext.Parse(json)
@@ -45,6 +53,23 @@ let createImage path tileId =
     image.Source <- ImageSource.FromResource(path)
     image
 
+let createRectangle columnIndex rowIndex scale =
+    let height = 50.0 * scale
+    let width = 60.0 * scale
+    let yOffsetPlug = 25.0 * scale
+    let xOffsetPlug = -15.0 * scale
+    let columnIndex' = float columnIndex
+    let rowIndex' = float rowIndex
+    let yOffset = 
+        match columnIndex % 2 = 0 with
+        | true -> yOffsetPlug
+        | false -> yOffsetPlug + yOffsetPlug
+    let xOffset = (columnIndex' * xOffsetPlug) + xOffsetPlug
+    let x = xOffset + columnIndex' * width
+    let y = yOffset + rowIndex' * height
+    let rectangle = new Rectangle(x,y,width,height)
+    rectangle
+    
 let createLayout numberOfTiles scale =
     let width = 60.0 * scale
     let height = 50.0 * scale
@@ -70,31 +95,7 @@ let createTileContentData (tile:TileContext.ScenarioTile) (units: UnitContext.Sc
     RowNumber = tile.RowNumber;
     UnitId = unitId}
 
-let createRectangle columnIndex rowIndex scale =
-    let height = 50.0 * scale
-    let width = 60.0 * scale
-    let yOffsetPlug = 25.0 * scale
-    let xOffsetPlug = -15.0 * scale
-    let columnIndex' = float columnIndex
-    let rowIndex' = float rowIndex
-    let yOffset = 
-        match columnIndex % 2 = 0 with
-        | true -> yOffsetPlug
-        | false -> yOffsetPlug + yOffsetPlug
-    let xOffset = (columnIndex' * xOffsetPlug) + xOffsetPlug
-    let x = xOffset + columnIndex' * width
-    let y = yOffset + rowIndex' * height
-    let rectangle = new Rectangle(x,y,width,height)
-    rectangle
-
-type TileLayout(tileId:int) =
-    inherit AbsoluteLayout()
-    member this.TileId = tileId
-
-type TileFrame(tileId:int) =
-    inherit Frame()
-    member this.TileId = tileId
-
+    
 let createLabel (contentData: ContentData) =
     let label = new Label()
     label.FontSize <- 8.0
@@ -147,7 +148,7 @@ let addTileContent (layout:AbsoluteLayout) (contentData: ContentData) (scale: fl
     layout.Children.Add(frame,rectangle)
     layout.Children.Add(anotherFrame,rectangle)
 
-let populateBoard assembly =
+let populateSurface assembly =
     let tiles = getTiles 0 assembly
     let units = getUnits 0 assembly
     let equipments = getEquipments assembly
@@ -162,19 +163,19 @@ let populateBoard assembly =
     scrollView.Content <- layout
     scrollView
 
-//type App() as app =
-    //inherit Application()
+type App() as app =
+    inherit Application()
 
-    //let handleTapEvent (sender:Object) (e:EventArgs) =
-    //    let value = sender.ToString()
-    //    let tileLayout = sender :?> Demo.TileFrame
-    //    let tileId = tileLayout.TileId.ToString()
-    //    app.MainPage.DisplayAlert("Tile Pressed", tileId, "OK") |> ignore
-    //    ()
+    let handleTapEvent (sender:Object) (e:EventArgs) =
+        let value = sender.ToString()
+        let tileLayout = sender :?> TileFrame
+        let tileId = tileLayout.TileId.ToString()
+        app.MainPage.DisplayAlert("Tile Pressed", tileId, "OK") |> ignore
+        ()
 
-    //do
-        //let assembly = IntrospectionExtensions.GetTypeInfo(typeof<App>).Assembly
-        //let scrollView = Demo.populateBoard assembly
-        //base.MainPage <- ContentPage(Content = scrollView)
-        //let tapEventHandler = new EventHandler(handleTapEvent)
-        //Demo.tapRecognizer.Tapped.AddHandler(tapEventHandler)
+    do
+        let assembly = IntrospectionExtensions.GetTypeInfo(typeof<App>).Assembly
+        let scrollView = populateSurface assembly
+        base.MainPage <- ContentPage(Content = scrollView)
+        let tapEventHandler = new EventHandler(handleTapEvent)
+        tapRecognizer.Tapped.AddHandler(tapEventHandler)

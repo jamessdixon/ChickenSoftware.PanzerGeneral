@@ -63,3 +63,50 @@ let getBaseTerrain (terrainId: int) (landCondition:LandCondition) (roadInd: int)
     | 0 -> Terrain.Sea baseTerrain
     | 1 -> Terrain.Port baseTerrain
     | _ -> Terrain.Land (getLand baseTerrain roadInd riverInd)
+
+let getBaseTerrainFromTerrain terrain =
+    match terrain with 
+    | Terrain.Sea bt -> bt
+    | Terrain.Port bt -> bt
+    | Terrain.Land l -> 
+        match l with
+        | Land.Airfield bt -> bt
+        | Land.Bocage it -> it.BaseTerrain
+        | Land.City bt -> bt
+        | Land.Clear it -> it.BaseTerrain
+        | Land.Desert bt -> bt
+        | Land.Escarpment bt -> bt
+        | Land.Forest bt -> bt
+        | Land.Fortificaiton it -> it.BaseTerrain
+        | Land.Mountain bt -> bt
+        | Land.Rough it -> it.BaseTerrain
+        | Land.RoughDesert bt -> bt
+        | Land.Swamp bt -> bt
+
+let getLandConditionId landCondition =
+    match landCondition with 
+    | LandCondition.Dry -> 0
+    | LandCondition.Muddy -> 1
+    | LandCondition.Frozen -> 2
+
+let getLandTypeId (lnd:Land) = 
+    match lnd with
+    | Land.Rough x -> 2
+    | Land.Mountain x -> 3
+    | Land.City x -> 4
+    | Land.Clear x -> 5
+    | Land.Forest x -> 6
+    | Land.Swamp x -> 7
+    | Land.Airfield x -> 8
+    | Land.Fortificaiton x -> 9
+    | Land.Bocage x -> 10
+    | Land.Desert x -> 11
+    | Land.RoughDesert x -> 12
+    | Land.Escarpment x -> 13
+
+let getTerrainTypeId (terrain: Terrain) =
+    match terrain with
+    | Terrain.Land l -> getLandTypeId l
+    | Terrain.Sea bt -> 0
+    | Terrain.Port bt -> 1
+
