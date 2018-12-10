@@ -22,7 +22,7 @@ let addContent (layout:AbsoluteLayout) =
         | 5 -> image.Source <- ImageSource.FromResource("explode0"); index <- 99
         | _ -> ()
         true)
-    Device.StartTimer(System.TimeSpan.FromSeconds(0.25),callback)
+    Device.StartTimer(System.TimeSpan.FromSeconds(20.25),callback)
 
 let populateImage =
     let layout = new AbsoluteLayout()
@@ -40,3 +40,4 @@ type App() =
         let scrollView = populateImage
         base.MainPage <- ContentPage(Content = scrollView)
 
+        //https://imgflip.com/gif/2om80q
