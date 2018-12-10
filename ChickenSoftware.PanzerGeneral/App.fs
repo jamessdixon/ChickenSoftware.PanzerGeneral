@@ -2,7 +2,9 @@
 
 open System
 open Xamarin.Forms
+open Fabulous.Core
 open System.Reflection
+open Fabulous.DynamicViews
 
 open UnitMapper
 open Hex
@@ -13,9 +15,16 @@ open Surface
 open UnitMapper
 open SupportData
 
+type Msg = | Pressed
+
+type Model = { Pressed: bool }
+
 
 type App() as app =
     inherit Application()
+
+    let init() = { Pressed = false }
+
 
     let handleTapEvent (sender:Object) (e:EventArgs) =
         let tileFrame = sender :?> TileFrame
