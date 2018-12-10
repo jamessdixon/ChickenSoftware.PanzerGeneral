@@ -1,4 +1,4 @@
-﻿module ChickenSoftware.PanzerGeneral.Demo
+﻿module ChickenSoftware.PanzerGeneral.EventDemo
 
 open System
 open System.IO

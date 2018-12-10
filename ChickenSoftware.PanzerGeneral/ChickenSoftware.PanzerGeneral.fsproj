@@ -3823,8 +3823,6 @@
     <EmbeddedResource Include="Images\tacmap_muddy\tacmapmuddy99.jpeg">
       <LogicalName>tacmapmuddy99</LogicalName>
     </EmbeddedResource>
-    <Compile Include="Demo.fs" />
-    <Compile Include="AssemblyInfo.fs" />
     <None Include="Scripts\Tap.fsx" />
     <None Include="Scripts\Nation.fsx" />
     <None Include="Scripts\Equipment.fsx" />
@@ -3835,6 +3833,8 @@
     <None Include="Scripts\Hex.fsx" />
     <None Include="Scripts\Surface.fsx" />
     <None Include="Scripts\Explode.fsx" />
+    <Compile Include="EventDemo.fs" />
+    <Compile Include="ExplodeDemo.fs" />
     <Compile Include="SupportData.fs" />
     <Compile Include="Nation.fs" />
     <Compile Include="Equipment.fs" />
@@ -3850,10 +3850,10 @@
     <Compile Include="Hex.fs" />
     <Compile Include="Surface.fs" />
     <Compile Include="App.fs" />
-    <PackageReference Include="Fabulous.Core" Version="0.28.0" />
     <PackageReference Include="FSharp.Core" Version="4.3.3" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
     <PackageReference Include="FSharp.Data" Version="3.0.0" />
+    <PackageReference Include="Fabulous.Core" Version="0.28.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 </Project>
