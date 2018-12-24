@@ -40,3 +40,8 @@ let getNation nationId =
     | 23 -> Allied GreatBritian
     | 24 -> Allied Yougaslovia
     | _ -> Neutral
+
+let getFlagId nation =
+    match nation with
+    | Allied OtherAllied -> 0
+    | _ -> 10

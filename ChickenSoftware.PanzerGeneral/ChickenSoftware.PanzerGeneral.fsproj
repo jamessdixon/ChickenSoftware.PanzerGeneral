@@ -3833,6 +3833,7 @@
     <None Include="Scripts\Hex.fsx" />
     <None Include="Scripts\Surface.fsx" />
     <None Include="Scripts\Explode.fsx" />
+    <None Include="Scripts\InitialBoard.fsx" />
     <Compile Include="EventDemo.fs" />
     <Compile Include="ExplodeDemo.fs" />
     <Compile Include="SupportData.fs" />
@@ -3850,10 +3851,10 @@
     <Compile Include="Hex.fs" />
     <Compile Include="Surface.fs" />
     <Compile Include="App.fs" />
-    <PackageReference Include="FSharp.Core" Version="4.3.3" />
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
+    <PackageReference Include="FSharp.Core" Version="4.5.4" />
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
     <PackageReference Include="FSharp.Data" Version="3.0.0" />
-    <PackageReference Include="Fabulous.Core" Version="0.28.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Fabulous.Core" Version="0.29.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 </Project>

@@ -10,8 +10,8 @@ let getReinforcementType id =
     match id with 
     | 0 -> ReinforcementType.Core
     | _ -> ReinforcementType.Auxiliary
-    
-let getUnitStats (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment)=
+
+let createUnitStats (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment)=
     let unitName = equipmentDatum.EquipmentDescription + " - " + id.ToString()
     {UnitStats.Id=id; Name = unitName; Strength=su.Strength}
 
@@ -20,7 +20,7 @@ let getCombatStats (su: ScenarioUnitContext.ScenarioUnit) =
     {CombatStats.Ammo=su.Ammo; Experience=su.Experience; ReinforcementType=reinforcementType}
 
 let getBridgingUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getInfantryEquipment equipmentDatum
     let unit = {UnitStats = unitStats; CombatStats= combatStats;Equipment = equipment; CanBridge = true; CanParaDrop = false}
@@ -30,7 +30,7 @@ let getBridgingUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDa
     Unit.Combat combat
 
 let getAirborneUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getInfantryEquipment equipmentDatum
     let unit = {UnitStats = unitStats; CombatStats= combatStats;Equipment = equipment; CanBridge = false; CanParaDrop = true}
@@ -40,7 +40,7 @@ let getAirborneUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDa
     Unit.Combat combat
 
 let getBasicInfantryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getInfantryEquipment equipmentDatum
     let unit = {UnitStats = unitStats; CombatStats= combatStats;Equipment = equipment; CanBridge = false; CanParaDrop = false}
@@ -50,7 +50,7 @@ let getBasicInfantryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipm
     Unit.Combat combat
 
 let getEngeneerUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getInfantryEquipment equipmentDatum
     let unit = {UnitStats = unitStats; CombatStats= combatStats;Equipment = equipment; CanBridge = false; CanParaDrop = false}
@@ -60,7 +60,7 @@ let getEngeneerUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDa
     Unit.Combat combat
 
 let getTankUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getTankEquipment equipmentDatum
@@ -70,7 +70,7 @@ let getTankUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum:
     Unit.Combat combat
 
 let getTankDestroyerUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getTankDestroyerEquipment equipmentDatum
@@ -80,7 +80,7 @@ let getTankDestroyerUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipm
     Unit.Combat combat
     
 let getReconUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getReconEquipment equipmentDatum
@@ -90,7 +90,7 @@ let getReconUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum
     Unit.Combat combat
 
 let getTowedLightAntiTankUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getAntiTankEquipment equipmentDatum
     let unit = {AntiTankUnit.UnitStats = unitStats; CombatStats= combatStats; Equipment = equipment;}
@@ -100,7 +100,7 @@ let getTowedLightAntiTankUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (e
     Unit.Combat combat
 
 let getTowedLightArtilleryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getArtilleryEquipment equipmentDatum
     let unit = {TowedArtilleryUnit.UnitStats = unitStats; CombatStats= combatStats; Equipment = equipment;}
@@ -111,7 +111,7 @@ let getTowedLightArtilleryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (
     Unit.Combat combat
     
 let getTowedHeavyAntiTankUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getAntiTankEquipment equipmentDatum
     let unit = {AntiTankUnit.UnitStats = unitStats; CombatStats= combatStats; Equipment = equipment;}
@@ -121,7 +121,7 @@ let getTowedHeavyAntiTankUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (e
     Unit.Combat combat
 
 let getTowedHeavyArtilleryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getArtilleryEquipment equipmentDatum
     let unit = {TowedArtilleryUnit.UnitStats = unitStats; CombatStats= combatStats; Equipment = equipment;}
@@ -132,7 +132,7 @@ let getTowedHeavyArtilleryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (
     Unit.Combat combat
 
 let getSelfPropelledArtilleryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getSelfPropelledArtilleryEquipment equipmentDatum
@@ -144,7 +144,7 @@ let getSelfPropelledArtilleryUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit
     Unit.Combat combat
 
 let getAntiAirUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getAntiAirEquipment equipmentDatum
@@ -154,7 +154,7 @@ let getAntiAirUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDat
     Unit.Combat combat
 
 let getTowedAirDefenseUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let equipment = getTowedAirDefenseEquipment equipmentDatum
     let unit = {TowedAirDefenseUnit.UnitStats = unitStats; CombatStats= combatStats;Equipment = equipment;}
@@ -164,7 +164,7 @@ let getTowedAirDefenseUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equi
     Unit.Combat combat
 
 let getSelfPropelledAirDefenseUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getSelfPropelledAirDefenseEquipment equipmentDatum
@@ -176,7 +176,7 @@ let getSelfPropelledAirDefenseUnit (id:int) (su: ScenarioUnitContext.ScenarioUni
     Unit.Combat combat
 
 let getFortUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let equipment = getEmplacementEquipment equipmentDatum
     let combatStats = getCombatStats su
     let unit = {EmplacementUnit.UnitStats = unitStats; CombatStats= combatStats; Equipment = equipment;}
@@ -186,7 +186,7 @@ let getFortUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum:
     Unit.Combat combat
 
 let getStrongPointUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let equipment = getEmplacementEquipment equipmentDatum
     let combatStats = getCombatStats su
     let unit = {EmplacementUnit.UnitStats = unitStats; CombatStats= combatStats; Equipment = equipment;}
@@ -196,7 +196,7 @@ let getStrongPointUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmen
     Unit.Combat combat
 
 let getPropFighterUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getAirFighterEquipment equipmentDatum
@@ -207,7 +207,7 @@ let getPropFighterUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmen
     Unit.Combat combat
 
 let getJetFighterUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment = getAirFighterEquipment equipmentDatum
@@ -218,7 +218,7 @@ let getJetFighterUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipment
     Unit.Combat combat
 
 let getTacticalBomberUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getAirBomberEquipment equipmentDatum
@@ -229,7 +229,7 @@ let getTacticalBomberUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equip
     Unit.Combat combat
 
 let getStrategicBomberUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getAirBomberEquipment equipmentDatum
@@ -240,7 +240,7 @@ let getStrategicBomberUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equi
     Unit.Combat combat
 
 let getSubmarineUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getSubmarineEquipment equipmentDatum
@@ -250,7 +250,7 @@ let getSubmarineUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentD
     Unit.Combat combat
 
 let getDestroyerUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getSurfaceShipEquipment equipmentDatum
@@ -260,7 +260,7 @@ let getDestroyerUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentD
     Unit.Combat combat
 
 let getCapitalShipUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let combatStats = getCombatStats su
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getSurfaceShipEquipment equipmentDatum
@@ -270,7 +270,7 @@ let getCapitalShipUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmen
     Unit.Combat combat
 
 let getAircraftCarrierUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getSeaTransportEquipment equipmentDatum
     let transport = {SeaTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
@@ -280,7 +280,7 @@ let getAircraftCarrierUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equi
     Unit.Transport transport
 
 let getLandingCraftUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getSeaTransportEquipment equipmentDatum
     let transport = {SeaTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment}
@@ -290,7 +290,7 @@ let getLandingCraftUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipme
     Unit.Transport transport
     
 let getLandTransportUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getLandTransportEquipment equipmentDatum
     let unit = {LandTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment;Payload=None}
@@ -298,7 +298,7 @@ let getLandTransportUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipm
     Unit.Transport transport
 
 let getAirTransportUnit (id:int) (su: ScenarioUnitContext.ScenarioUnit) (equipmentDatum: EquipmentContext.Equipment) =
-    let unitStats = getUnitStats id su equipmentDatum
+    let unitStats = createUnitStats id su equipmentDatum
     let motorizedMovementStats = {Fuel = equipmentDatum.MaxFuel}
     let equipment =  getAirTransportEquipment equipmentDatum
     let unit = {AirTransportUnit.UnitStats=unitStats;MotorizedMovementStats= motorizedMovementStats;Equipment=equipment;Payload=None}
@@ -553,6 +553,67 @@ let getMotorizedMovementStats unit =
             | NavalTransport.AircraftCarrier ntac -> Some ntac.TranportUnit.MotorizedMovementStats
             | NavalTransport.LandingCraft ntlc -> Some ntlc.TransportUnit.MotorizedMovementStats
 
+let getUnitStats unit =
+    match unit with 
+    | Unit.Combat c -> 
+        match c with 
+        | Combat.Air ac -> 
+            match ac with
+            | AirCombat.Fighter acf ->
+                match  acf with
+                | Fighter.Prop acfp -> acfp.UnitStats
+                | Fighter.Jet acfj -> acfj.UnitStats
+            | AirCombat.Bomber acb ->
+                match acb with
+                | Bomber.Tactical acbt -> acbt.UnitStats
+                | Bomber.Strategic acbs -> acbs.UnitStats
+        | Combat.Land lc ->
+            match lc with 
+            | LandCombat.AirDefense lcad ->
+                match lcad with 
+                | AirDefense.SelfPropelled lcadsp -> lcadsp.UnitStats
+                | AirDefense.Towed lcadt -> lcadt.UnitStats
+            | LandCombat.AntiAir lcaa -> lcaa.UnitStats
+            | LandCombat.AntiTank lcat ->
+                match lcat with
+                | AntiTank.Light lcatl -> lcatl.UnitStats
+                | AntiTank.Heavy lcath -> lcath.UnitStats
+            | LandCombat.Artillery lca ->
+                match lca with
+                | Artillery.Towed lcat ->
+                    match lcat with 
+                    | TowedArtillery.Light lcatl -> lcatl.UnitStats
+                    | TowedArtillery.Heavy lcath -> lcath.UnitStats
+                | Artillery.SelfPropelled lcasp -> lcasp.UnitStats
+            | LandCombat.Emplacement lce -> 
+                match lce with
+                | Emplacement.Fort lcef -> lcef.UnitStats
+                | Emplacement.Strongpoint lces -> lces.UnitStats
+            | LandCombat.Infantry lci ->
+                match lci with 
+                | Infantry.Airborne lcia -> lcia.UnitStats
+                | Infantry.Basic lcib -> lcib.UnitStats
+                | Infantry.Bridging lcig -> lcig.UnitStats
+                | Infantry.Engineer lcie -> lcie.UnitStats
+                | Infantry.HeavyWeapon lcihw -> lcihw.UnitStats
+                | Infantry.Ranger lcir -> lcir.UnitStats
+            | LandCombat.Recon lcr -> lcr.UnitStats
+            | LandCombat.Tank lct -> lct.UnitStats
+            | LandCombat.TankDestroyer lctd -> lctd.UnitStats
+        | Combat.Naval nc ->
+            match nc with
+            | NavalCombat.CapitalShip nccs -> nccs.UnitStats 
+            | NavalCombat.Destroyer ncd -> ncd.UnitStats
+            | NavalCombat.Submarine ncs -> ncs.UnitStats
+    | Unit.Transport t -> 
+        match t with 
+        | Transport.Air at -> at.UnitStats
+        | Transport.Land lt -> lt.UnitStats
+        | Transport.Naval nt -> 
+            match nt with
+            | NavalTransport.AircraftCarrier ntac -> ntac.TranportUnit.UnitStats
+            | NavalTransport.LandingCraft ntlc -> ntlc.TransportUnit.UnitStats
+
 let getUnitIconId unit =
     let equipment = getBaseEquipment unit
     equipment.IconId
@@ -567,7 +628,6 @@ let getUnitMovementPoints (unit:Unit) =
         | false -> mv.MaximumMovementPoints
     | Some mv, None -> mv.MaximumMovementPoints
     | _ , _ -> 0
-
-
+    
 
 

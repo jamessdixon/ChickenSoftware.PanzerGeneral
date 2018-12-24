@@ -12,9 +12,9 @@ type AppDelegate () =
 
     override this.FinishedLaunching (app, options) =
         Forms.Init()
+        this.LoadApplication (new ChickenSoftware.PanzerGeneral.App())
         //this.LoadApplication (new ChickenSoftware.PanzerGeneral.EventDemo.App())
-        //this.LoadApplication (new ChickenSoftware.PanzerGeneral.App())
-        this.LoadApplication (new ChickenSoftware.PanzerGeneral.ExplodeDemo.App())
+        //this.LoadApplication (new ChickenSoftware.PanzerGeneral.ExplodeDemo.App())
         base.FinishedLaunching(app, options)
 
 module Main =

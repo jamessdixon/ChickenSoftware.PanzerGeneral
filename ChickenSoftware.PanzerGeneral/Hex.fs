@@ -92,26 +92,37 @@ let getSkyUnitFrame (baseTile: BaseTile) (scale:float) =
     | _, _ -> None
 
 let getStrengthFrame (tile: Tile) (scale:float) =
-    let frame = new Frame()
-    //let path = "tacicons" + iconId.ToString()
-    //let image = getImage path
-    //image.Scale <- (scale + 0.6)
-    frame.BackgroundColor <- Color.Transparent
-    frame.BorderColor <- Color.Transparent
-    frame.InputTransparent <- true
-    //frame.Content <- image
-    Some frame
+    let baseTile = getBaseTile tile
+    match baseTile.EarthUnit with
+    | Some eu -> 
+        let frame = new Frame()
+        let unitStats = UnitMapper.getUnitStats eu
+        let strengthId = unitStats.Strength - 1
+        let path = "strength" + strengthId.ToString()
+        let image = getImage path
+        image.Scale <- (scale + 0.6)
+        frame.BackgroundColor <- Color.Transparent
+        frame.BorderColor <- Color.Transparent
+        frame.InputTransparent <- true
+        frame.Content <- image
+        Some frame
+    | None -> None
 
 let getNationFrame (tile: Tile) (scale:float) =
-    let frame = new Frame()
-    //let path = "tacicons" + iconId.ToString()
-    //let image = getImage path
-    //image.Scale <- (scale + 0.6)
-    frame.BackgroundColor <- Color.Transparent
-    frame.BorderColor <- Color.Transparent
-    frame.InputTransparent <- true
-    //frame.Content <- image
-    Some frame
+    let baseTile = getBaseTile tile
+    match baseTile.Nation with
+    | Some n -> 
+        let frame = new Frame()
+        let flagId = Nation.getFlagId n
+        let path = "flags" + flagId.ToString()
+        let image = getImage path
+        image.Scale <- (scale + 0.6)
+        frame.BackgroundColor <- Color.Transparent
+        frame.BorderColor <- Color.Transparent
+        frame.InputTransparent <- true
+        frame.Content <- image
+        Some frame
+    | None -> None
 
 let createHex (layout:AbsoluteLayout) (tile: Tile) (scale:float) =
     let baseTile = getBaseTile tile
@@ -126,12 +137,12 @@ let createHex (layout:AbsoluteLayout) (tile: Tile) (scale:float) =
     //match skyUnitFrame with 
     //| Some f -> layout.Children.Add(f,rectangle)
     //| None -> ()
-    //let strengthFrame = getStrengthFrame tile scale
-    //match strengthFrame with 
-    //| Some f -> layout.Children.Add(f,rectangle)
-    //| None -> ()
+    let strengthFrame = getStrengthFrame tile scale
+    match strengthFrame with 
+    | Some f -> layout.Children.Add(f,rectangle)
+    | None -> ()
     //let nationFrame = getNationFrame tile scale
     //match nationFrame with 
     //| Some f -> layout.Children.Add(f,rectangle)
-
+    //| None -> ()
 
