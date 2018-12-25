@@ -43,5 +43,20 @@ let getNation nationId =
 
 let getFlagId nation =
     match nation with
-    | Allied OtherAllied -> 0
-    | _ -> 10
+    // Belgium -> 1
+    | Allied Yougaslovia -> 2
+    | Allied France -> 6
+    | Axis German -> 7
+    | Allied Greece -> 8
+    | Allied UnitedStates -> 9
+    //China -> 11
+    | Axis Italy -> 12
+    | Allied Norway -> 14
+    | Allied Poland -> 15
+    | Axis Romania -> 17
+    | Allied SovietUnion -> 19
+    | Axis Hungary -> 20
+    | Allied GreatBritian -> 22
+    | Axis Bulgaria -> 23
+    | Allied OtherAllied -> 24
+    | _ -> 24

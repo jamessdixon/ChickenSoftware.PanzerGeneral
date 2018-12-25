@@ -3848,6 +3848,7 @@
     <Compile Include="MovementCalculator.fs" />
     <Compile Include="Combat.fs" />
     <Compile Include="Board.fs" />
+    <Compile Include="Scenario.fs" />
     <Compile Include="Hex.fs" />
     <Compile Include="Surface.fs" />
     <Compile Include="App.fs" />

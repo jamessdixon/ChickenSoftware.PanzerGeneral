@@ -100,3 +100,4 @@ let createBoard (assembly: Assembly) (scenrioId:int) (landCondition: LandConditi
     let equipments = getEquipmentData assembly
     scenarioTiles
     |> Array.map(fun st -> createTile st landCondition tileNames nations scenarioUnits equipments)
+    

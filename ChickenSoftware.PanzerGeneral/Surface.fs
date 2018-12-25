@@ -17,8 +17,7 @@ let createLayout numberOfTiles scale =
     layout.HeightRequest <- rows * height
     layout
 
-let populateSurface (assembly:Assembly) (scenarioId:int) =
-    let board = createBoard assembly scenarioId LandCondition.Dry
+let createSurface (board:Tile array) =
     let scale = 1.5
     let numberOfTiles = board |> Seq.length
     let layout = createLayout numberOfTiles scale
@@ -28,3 +27,7 @@ let populateSurface (assembly:Assembly) (scenarioId:int) =
     scrollView.Orientation <- ScrollOrientation.Both
     scrollView.Content <- layout
     scrollView
+    
+
+
+        
