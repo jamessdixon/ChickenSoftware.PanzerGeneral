@@ -8,6 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\" />
+    <Folder Include="Images\misc\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\Campaign.json">
@@ -3857,5 +3858,11 @@
     <PackageReference Include="FSharp.Data" Version="3.0.0" />
     <PackageReference Include="Fabulous.Core" Version="0.29.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <EmbeddedResource Include="Images\misc\green.jpeg">
+      <LogicalName>green</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\misc\red.jpeg">
+      <LogicalName>red</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

@@ -30,7 +30,7 @@ let getTileName (scenarioTile: TileContext.ScenarioTile) (tileNameData: TileName
 
 let getNation (scenarioTile: TileContext.ScenarioTile) (nationData: NationContext.Nation array) =
         match scenarioTile.NationId with
-        | 0 -> None
+        | -1 -> None
         | _ -> nationData
                |> Array.tryFind(fun nd -> nd.NationId = scenarioTile.NationId)
                |> getBaseNation

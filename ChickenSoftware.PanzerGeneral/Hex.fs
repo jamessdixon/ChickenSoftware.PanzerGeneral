@@ -141,8 +141,8 @@ let createHex (layout:AbsoluteLayout) (tile: Tile) (scale:float) =
     match strengthFrame with 
     | Some f -> layout.Children.Add(f,rectangle)
     | None -> ()
-    //let nationFrame = getNationFrame tile scale
-    //match nationFrame with 
-    //| Some f -> layout.Children.Add(f,rectangle)
-    //| None -> ()
+    let nationFrame = getNationFrame tile scale
+    match nationFrame with 
+    | Some f -> layout.Children.Add(f,rectangle)
+    | None -> ()
 
