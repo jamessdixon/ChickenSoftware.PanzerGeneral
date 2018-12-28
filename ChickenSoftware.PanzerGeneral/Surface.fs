@@ -4,6 +4,7 @@ module ChickenSoftware.PanzerGeneral.Surface
 open Hex
 open Tile
 open Board
+open System
 open Terrain
 open Xamarin.Forms
 open System.Reflection
@@ -76,10 +77,56 @@ let activateHex (layout:AbsoluteLayout) (tileFrame:TileFrame) (scale:float) =
     frame.InputTransparent <- true
     frame.Content <- image
     layout.Children.Add(frame, rectangle)
-
+    
 let deactivateHexes (layout:AbsoluteLayout) =
     layout.Children
     |> Seq.filter(fun c -> c :? GreenFrame)
     |> Seq.toArray
     |> Array.iter(fun f -> layout.Children.Remove(f) |> ignore)
 
+let getTileFrame (layout:AbsoluteLayout) (id: int)=
+    let tuple = 
+        layout.Children
+        |> Seq.filter(fun c -> c :? TileFrame)
+        |> Seq.map(fun tf -> tf :?> TileFrame)
+        |> Seq.map(fun tf -> tf, tf.Tile)
+        |> Seq.map(fun (tf,t) -> tf, getBaseTile t)
+        |> Seq.tryFind(fun (tf,bt) -> bt.Id = id)
+    match tuple with 
+    | Some t -> Some (fst t)
+    | None -> None
+
+let createSurfaceGrid (scrollView:ScrollView) handleEndTurnEvent =
+    let grid = Grid(VerticalOptions=LayoutOptions.FillAndExpand,
+                    HorizontalOptions=LayoutOptions.FillAndExpand,
+                    ColumnSpacing=0.0,RowSpacing=0.0,
+                    BackgroundColor=Color.Gray)
+    let headerBoxView = BoxView(BackgroundColor=Color.Gray)
+    let endTurnButton = Button(BackgroundColor=Color.Black, Text="End Turn")
+
+    let endTurnHandler = new EventHandler(handleEndTurnEvent)
+    endTurnButton.Clicked.AddHandler(endTurnHandler)
+    let resetGameButton = Button(BackgroundColor=Color.Black, Text = "Reset Game")
+
+    grid.RowDefinitions.Add(RowDefinition(Height=GridLength(40.0,GridUnitType.Absolute)))
+    grid.RowDefinitions.Add(RowDefinition(Height=GridLength(50.0,GridUnitType.Absolute)))
+    grid.ColumnDefinitions.Add(ColumnDefinition(Width=GridLength(1.0,GridUnitType.Star)))
+    grid.ColumnDefinitions.Add(ColumnDefinition(Width=GridLength(1.0,GridUnitType.Star)))
+
+    Grid.SetRow(headerBoxView,0)
+    Grid.SetRow(resetGameButton,1)
+    Grid.SetRow(endTurnButton,1)
+    Grid.SetRow(scrollView,2)
+
+    Grid.SetColumnSpan(headerBoxView,2)
+    Grid.SetColumnSpan(scrollView,2)
+
+    Grid.SetColumn(resetGameButton,0)
+    Grid.SetColumn(endTurnButton,1)
+
+    grid.Children.Add(headerBoxView)
+    grid.Children.Add(resetGameButton)
+    grid.Children.Add(endTurnButton)
+    grid.Children.Add(scrollView)
+
+    grid

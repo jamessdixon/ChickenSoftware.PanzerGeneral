@@ -35,3 +35,41 @@ let canUnitEnterTile (unit:Unit) (baseTile:BaseTile) (landCondition: LandConditi
     let tileMovementPoints = getTileMovementPoints unit baseTile landCondition mcs
     let pointDifference = unitMovementPoints - tileMovementPoints
     pointDifference >= 0
+
+let getAdjacentTile (baseTile: BaseTile) (board: Tile array) (rowChange:int) (columnChange:int) =
+    board 
+    |> Array.map(fun t -> getBaseTile t)
+    |> Array.tryFind(fun t -> t.RowNumber = baseTile.RowNumber + rowChange 
+                              && t.ColumnNumber = baseTile.ColumnNumber + columnChange)
+
+let getAdjacentTiles (baseTile: BaseTile) getCurrentAdjacentTile = 
+        match baseTile.ColumnNumber % 2 with 
+        | 0 ->
+            let north = getCurrentAdjacentTile -1 0
+            let south = getCurrentAdjacentTile 1 0
+            let northEast = getCurrentAdjacentTile -1 1
+            let southEast = getCurrentAdjacentTile 0 1
+            let northWest = getCurrentAdjacentTile -1 -1
+            let southWest = getCurrentAdjacentTile 0 -1
+            [|north;south;northEast;southEast;northWest;southWest|]
+        | _ -> 
+            let north = getCurrentAdjacentTile -1 0
+            let south = getCurrentAdjacentTile 1 0
+            let northEast = getCurrentAdjacentTile 0 1
+            let southEast = getCurrentAdjacentTile 1 1
+            let northWest = getCurrentAdjacentTile 0 -1
+            let southWest = getCurrentAdjacentTile 1 -1
+            [|north;south;northEast;southEast;northWest;southWest|]
+
+let getMovableTiles (unit:Unit) (targetTile:Tile) (landCondition: LandCondition) (board: Tile array) =
+    let baseTile = getBaseTile targetTile
+    let getCurrentAdjacentTile = getAdjacentTile baseTile board 
+    let adjacentTiles = getAdjacentTiles baseTile getCurrentAdjacentTile
+    adjacentTiles
+    |> Array.filter(fun t -> t.IsSome)
+    |> Array.map(fun t -> t.Value)
+    |> Array.filter(fun t -> t.EarthUnit.IsNone)
+    //TODO start here
+    //|> Array.filter(fun t -> t.Terrain = Terrain.Land)
+
+
