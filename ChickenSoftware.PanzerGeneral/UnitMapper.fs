@@ -628,6 +628,14 @@ let getUnitMovementPoints (unit:Unit) =
         | false -> mv.MaximumMovementPoints
     | Some mv, None -> mv.MaximumMovementPoints
     | _ , _ -> 0
-    
 
-
+let isUnitLand unit =
+    match unit with 
+    | Unit.Combat c -> 
+        match c with 
+        | Combat.Land lc -> true
+        | _ -> false
+    | Unit.Transport t ->
+         match t with 
+                | Transport.Land lt -> true
+                | _ -> false

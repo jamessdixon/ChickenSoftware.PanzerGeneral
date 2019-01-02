@@ -110,3 +110,8 @@ let getTerrainTypeId (terrain: Terrain) =
     | Terrain.Sea bt -> 0
     | Terrain.Port bt -> 1
 
+let canLandUnitsEnter (terrain: Terrain) =
+    match terrain with
+    | Terrain.Land l -> true
+    | Terrain.Sea bt -> false
+    | Terrain.Port bt -> true

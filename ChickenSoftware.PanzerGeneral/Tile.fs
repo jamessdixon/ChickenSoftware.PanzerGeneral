@@ -28,6 +28,9 @@ let getBaseTile (tile:Tile) =
     | Tile.Regular bt -> bt
     | Tile.Victory vt -> vt.BaseTile
 
+let getTileId (tile:Tile) =
+    (getBaseTile tile).Id
+
 let getTerrainMovementCost (terrain: Terrain) =
         match terrain with 
         | Terrain.Land l ->
@@ -46,5 +49,17 @@ let getTerrainMovementCost (terrain: Terrain) =
             | Land.Swamp bt -> 1
         | Terrain.Sea _ -> 1
         | Terrain.Port _ -> 1
-        
+
+let getUnweightedDistance (sourceTile:Tile) (targetTile:Tile) =
+    let sourceBaseTile = getBaseTile sourceTile
+    let targetBaseTile = getBaseTile targetTile
+    let columnDistance = abs(targetBaseTile.ColumnNumber - sourceBaseTile.ColumnNumber)
+    let rowDistance = abs(targetBaseTile.RowNumber - sourceBaseTile.RowNumber)
+    columnDistance + rowDistance
+
+let getWeightedDistance (unit:Unit) (sourceTile:Tile) (targetTile:Tile) =
+    0
+
+
+
 
