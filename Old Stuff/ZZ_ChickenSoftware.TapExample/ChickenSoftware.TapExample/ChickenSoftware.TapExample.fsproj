@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.fs" />
+    <Compile Include="AssemblyInfo.fs" />
+    <EmbeddedResource Include="tacmapdry27.jpeg">
+      <LogicalName>tacmapdry27</LogicalName>
+    </EmbeddedResource>
+    <PackageReference Include="FSharp.Core" Version="4.3.3" />
+    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
+    <EmbeddedResource Include="tacicons21.jpeg">
+      <LogicalName>tacicons21</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

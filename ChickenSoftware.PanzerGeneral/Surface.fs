@@ -195,6 +195,7 @@ let handleUnitMovement (scenario: Scenario) (layout) (targetTile:Tile) =
     let updatedScenario = moveUnit scenario targetTile
     updateLayout layout scenario.ActiveTile.Value
     updateLayout layout updatedScenario.ActiveTile.Value
+    deactivateHexes layout
     updatedScenario
 
 let handleUnitAttack (scenario: Scenario) =

@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "ChickenSoftware.PhotoParser", "ChickenSoftware.PhotoParser\ChickenSoftware.PhotoParser.fsproj", "{01A696FE-85B2-427E-B0C6-45DF379C0889}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01A696FE-85B2-427E-B0C6-45DF379C0889}.Debug|x86.ActiveCfg = Debug|x86
+		{01A696FE-85B2-427E-B0C6-45DF379C0889}.Debug|x86.Build.0 = Debug|x86
+		{01A696FE-85B2-427E-B0C6-45DF379C0889}.Release|x86.ActiveCfg = Release|x86
+		{01A696FE-85B2-427E-B0C6-45DF379C0889}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal
